@@ -13,8 +13,14 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/search', (req, res) => {
-  const { q } = req.query;
-  keywordSearch(q).then(result => res.json(result));
+  const { q, countries } = req.query;
+
+  const queryOpts = {
+    size:200,
+    countries: countries?.split(',').map(str => str.trim())
+  }
+  
+  keywordSearch(q, queryOpts).then(result => res.json(result));
 });
 
 //Listen port
