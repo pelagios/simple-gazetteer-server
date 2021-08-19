@@ -9,6 +9,8 @@ const App = () => {
 
   const [ progress, setProgress ] = useState();
 
+  const [ result, setResult ] = useState();
+
   const onChangeFile = evt => {
     const file = evt.target.files[0];
 
@@ -22,7 +24,7 @@ const App = () => {
 
       const resolver = new GeoResolver();
       resolver.on('progress', setProgress);
-      resolver.on('complete', resolved => console.log(resolved));
+      resolver.on('complete', resolved => setResult(resolved));
 
       resolver.resolve(csv);
     };
@@ -30,11 +32,24 @@ const App = () => {
     reader.readAsText(file);
   }
 
+  const onDownloadResult = () => {
+    const csv = Papa.unparse(result.resolved);
+
+    const a = document.createElement('a');  
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);  
+    a.target = '_blank';  
+      
+    a.download = 'resolved.csv';  
+    a.click();
+  }
+
   return (
     <div className="App">
       <input type="file" onChange={onChangeFile} />
 
       {progress && <div className="progress">{progress.count}</div> }
+
+      {result && <button onClick={onDownloadResult}>Download</button> }
     </div>
   );
 

@@ -37,8 +37,6 @@ export default class GeoResolver extends Emitter {
     let ctrErrors = 0;
     
     for (const [ idx, row ] of csv.data.entries()) {
-      console.log(row);
-
       const placename = row.caption.split('-')[0].trim();
       const country = row.country.trim();
 
