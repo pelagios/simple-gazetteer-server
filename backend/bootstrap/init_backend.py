@@ -20,7 +20,7 @@ response = requests.delete(GEOCODER_URL)
 """
 Init index from JSON config
 """
-with open('./elastic.config.json') as f:
+with open('./gazetteer.mappings.json') as f:
   data = json.load(f)
   response = requests.put(GEOCODER_URL, json=data)
 

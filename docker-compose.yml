@@ -3,12 +3,12 @@ version: '3.8'
 services: 
   # Cf. https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
   backend:
-    container_name: gazetteer-backend
+    container_name: simple-gazetteer-backend
     build: 
       context: ./backend/
       dockerfile: Dockerfile
     environment:
-      - cluster.name=gazetteer
+      - cluster.name=simple-gazetteer
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx4096m"
       - discovery.type=single-node
@@ -22,10 +22,10 @@ services:
       - 9200:9200
     restart: always
     networks:
-      - gazetteer
+      - simple-gazetteer
 
   api:
-    container_name: gazetteer-api
+    container_name: simple-gazetteer-api
     build: 
       context: ./api/
       dockerfile: Dockerfile
@@ -33,9 +33,9 @@ services:
       - 8080:8080
     restart: always
     networks:
-      - gazetteer
+      - simple-gazetteer
     depends_on:
       - backend
  
 networks:
-  gazetteer:
+  simple-gazetteer:
