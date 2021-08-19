@@ -1,0 +1,25 @@
+{
+  "mappings": {
+    "properties": {
+      "@id":    { "type": "keyword" },  
+      "type":  { "type": "keyword"  },
+      "properties":   { 
+        "properties": {
+          "title": { "type": "text" },
+          "ccodes": { "type": "keyword" },
+          "admin_codes": { "type": "keyword" },
+          "feature_class": { "type": "keyword" },
+          "feature_code": { "type": "keyword" },
+          "population": { "type": "long" },
+          "elevation": { "type": "integer" }
+        }
+      },
+      "names": {
+        "properties": {
+          "toponym": { "type": "text" }
+        }
+      },
+      "geometry": { "type": "geo_shape" }
+    }
+  }
+}
