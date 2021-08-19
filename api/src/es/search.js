@@ -1,5 +1,11 @@
 import fetch from 'node-fetch';
-import { getCode } from 'country-list';
+import countries from 'country-list';
+
+// Fixing some holes...
+countries.overwrite([{
+  code: 'SY',
+  name: 'Syria'
+}]);
 
 const toResultList = esResults => ({
   took: esResults.took,
@@ -40,20 +46,16 @@ export const keywordSearch = (keyword, queryOpts) => {
     const iso = queryOpts.countries
       .map(country => country.length === 2 ?
         country.toUpperCase() :
-        getCode(country))
+        countries.getCode(country))
       .filter(iso => iso); // Remove unresolved country names
 
-    if (queryOpts.countries.length === 1) {
+    if (iso.length === 1) {
       query.query.bool.must.push(
-
         { term: { "properties.ccodes": { value: iso[0] } } }
-      
       )
-    } else {
-      query.query.bool.must.push(
-        
+    } else if (iso.length > 1) {
+      query.query.bool.must.push(        
         { terms: { "properties.ccodes": iso } }
-      
       )
     }
   }
