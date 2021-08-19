@@ -64,7 +64,7 @@ export const keywordSearch = (keyword, queryOpts) => {
     headers: { 'Content-Type': 'application/json' }
   }
 
-  return fetch('http://localhost:9200/gazetteer/_search', options)
+  return fetch('http://backend:9200/gazetteer/_search', options)
     .then(res => res.json())
     .then(data => toResultList(data));
 }
