@@ -1,0 +1,14 @@
+{
+  "mappings": {
+    "properties": {
+      "id": { "type": "keyword" },  
+      "authority_type": { "type": "keyword" },
+      "shortname": { "type": "text" },
+      "fullname": { "type": "text" },
+      "homepage": { "type": "keyword", "index": false },
+      "shortcode": { "type": "keyword" },
+      "color": { "type": "keyword", "index": false },
+      "url_patterns": { "type": "keyword" }
+    }
+  }
+}
