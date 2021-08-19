@@ -58,8 +58,6 @@ export const keywordSearch = (keyword, queryOpts) => {
     }
   }
 
-  console.log(JSON.stringify(query, null, 2));
-
   const options = {
     method: 'POST',
     body: JSON.stringify(query),
