@@ -1,5 +1,7 @@
 # Simple Gazetteer Server
 
+__!!! Work in progress !!!__
+
 A simple gazetteer server & API for use with [Linked Places](https://github.com/LinkedPasts/linked-places-format) 
 and other authority file formats. This repository includes a global GeoNames dataset to get you started (1.6 million 
 notable places).
