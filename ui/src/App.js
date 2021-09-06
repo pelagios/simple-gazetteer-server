@@ -54,11 +54,14 @@ const App = () => {
   
   const unresolved = result?.resolved.filter(row => !row.geonames_uri);
 
-  const onFixRecord = (previous, fixed) =>
+  const onFixRecord = (previous, fixed) => {
     setResult({
       ...result,
       resolved: result.resolved.map(row => row == previous ? fixed : row)
-    }); 
+    });
+
+    setSelected(selected.filter(row => row == previous ? fixed : row));
+  }
 
   return (
     <>

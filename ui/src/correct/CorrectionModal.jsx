@@ -23,6 +23,11 @@ const CorrectionModal = props => {
       setCurrentRecord(props.records[nextIdx]);
   }
 
+  const onFixRecord = (previous, fixed) => {
+    setCurrentRecord(fixed);
+    props.onFixRecord(previous, fixed);
+  }
+
   return (
     <div className="correction-modal">
       <RecordDetails 
@@ -31,7 +36,7 @@ const CorrectionModal = props => {
         idx={props.records.indexOf(currentRecord) + 1}
         onPrevious={onPrevious} 
         onNext={onNext} 
-        onFixRecord={props.onFixRecord}
+        onFixRecord={onFixRecord}
         onClose={props.onClose} />
     </div>
   )
