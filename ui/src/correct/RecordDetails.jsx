@@ -6,8 +6,6 @@ const getToponym = caption =>
 
 const RecordDetails = props => {
 
-  const [ alternatives, setAlternatives ] = useState([]);
-
   const { 
     caption, 
     country, 
@@ -20,13 +18,29 @@ const RecordDetails = props => {
     resource_id
   } = props.record;
 
+  const [ alternatives, setAlternatives ] = useState([]);
+
+  const [ query, setQuery ] = useState(getToponym(caption));
+
   useEffect(() => {
-    fetch(`http://api.geonames.org/searchJSON?q=${getToponym(caption)}&maxRows=10&username=pelagios`)
+    fetch(`http://api.geonames.org/searchJSON?q=${query}&maxRows=10&username=pelagios`)
       .then(response => response.json())
       .then(data => {
         setAlternatives(data.geonames);
       });
-  }, []);
+  }, [ query ]);
+
+  const onSelectAlternative = alternative => () => {
+    props.onFixRecord(props.record, {
+      ...props.record,
+      geonames_country: alternative.countryCode,
+      geonames_name_variants: [], // TODO!
+      geonames_title: alternative.name,
+      geonames_uri: `http://sws.geonames.org/${alternative.geonameId}`,
+      ĺat: parseFloat(alternative.lat),
+      lon: parseFloat(alternative.lng)
+    })
+  }
 
   return (
     <div className="record-details">
@@ -81,6 +95,10 @@ const RecordDetails = props => {
 
         <div className="alternatives">
           <h3>Alternatives</h3>
+          <input 
+            type="text" 
+            value={query}
+            onChange={evt => setQuery(evt.target.value)} />
           <table>
             <thead>
               <tr>
@@ -95,15 +113,15 @@ const RecordDetails = props => {
               {alternatives.map(p => 
                 <tr key={p.geonameId}>
                   <td>
-                    <a href={`https://sws.geonames.org/place/${p.geonameId}`} target="_blank">
+                    <a href={`https://sws.geonames.org/${p.geonameId}`} target="_blank">
                       {p.geonameId}
                     </a>
                   </td>
                   <td>{p.name}</td>
-                  <td>{p.countryCode}</td>
+                  <td>{p.countryName}</td>
                   <td>{p.fcodeName}</td>
                   <td>
-                    <button>Select</button>
+                    <button onClick={onSelectAlternative(p)}>Select</button>
                   </td>
                 </tr>
               )}

@@ -47,9 +47,13 @@ const App = () => {
     a.click();
   }
 
-  const onSelect = rows => {
-    console.log(rows);
-    setSelected(rows);
+  const onFixRecord = (previous, fixed) => {
+    console.log(previous, fixed);
+    
+    setResult({
+      ...result,
+      resolved: result.resolved.map(row => row == previous ? fixed : row)
+    }); 
   }
 
   return (
@@ -61,7 +65,7 @@ const App = () => {
       {result && 
         <OverviewMap 
           data={result.resolved} 
-          onSelect={onSelect} />
+          onSelect={rows => setSelected(rows)} />
       }
 
       {result && <button onClick={onDownloadResult}>Download</button>}
@@ -69,6 +73,7 @@ const App = () => {
       {selected.length > 0 &&
         <CorrectionModal 
           records={selected} 
+          onFixRecord={onFixRecord}
           onClose={() => setSelected([])}/>
       }
     </div>

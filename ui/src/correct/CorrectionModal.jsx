@@ -31,6 +31,7 @@ const CorrectionModal = props => {
         idx={props.records.indexOf(currentRecord) + 1}
         onPrevious={onPrevious} 
         onNext={onNext} 
+        onFixRecord={props.onFixRecord}
         onClose={props.onClose} />
     </div>
   )
