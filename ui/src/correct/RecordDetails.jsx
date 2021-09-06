@@ -23,12 +23,16 @@ const RecordDetails = props => {
   const [ query, setQuery ] = useState(getToponym(caption));
 
   useEffect(() => {
-    fetch(`http://api.geonames.org/searchJSON?q=${query}&maxRows=10&username=pelagios`)
+    fetch(`http://api.geonames.org/searchJSON?q=${query}&maxRows=20&username=pelagios`)
       .then(response => response.json())
       .then(data => {
         setAlternatives(data.geonames);
       });
   }, [ query ]);
+
+  useEffect(() => {
+    setQuery(getToponym(caption));
+  }, [ props.record ])
 
   const onSelectAlternative = alternative => () => {
     props.onFixRecord(props.record, {
@@ -37,8 +41,8 @@ const RecordDetails = props => {
       geonames_name_variants: [], // TODO!
       geonames_title: alternative.name,
       geonames_uri: `http://sws.geonames.org/${alternative.geonameId}`,
-      ĺat: parseFloat(alternative.lat),
-      lon: parseFloat(alternative.lng)
+      ĺat: alternative.lat && parseFloat(alternative.lat),
+      lon: alternative.lng && parseFloat(alternative.lng)
     })
   }
 

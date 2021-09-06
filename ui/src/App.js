@@ -46,21 +46,26 @@ const App = () => {
     a.download = 'resolved.csv';  
     a.click();
   }
+  
+  const unresolved = result?.resolved.filter(row => !row.geonames_uri);
 
-  const onFixRecord = (previous, fixed) => {
-    console.log(previous, fixed);
-    
+  const onFixRecord = (previous, fixed) =>
     setResult({
       ...result,
       resolved: result.resolved.map(row => row == previous ? fixed : row)
     }); 
-  }
 
   return (
     <div className="app">
       <input type="file" onChange={onChangeFile} />
 
       {progress && <div className="progress">{progress.count}</div>}
+
+      {result && 
+        <div className="unresolved">
+          {unresolved.length} unresolved <button onClick={() => setSelected(unresolved)}>Fix</button>
+        </div>
+      }
 
       {result && 
         <OverviewMap 
