@@ -62,18 +62,24 @@ const OverviewMap = props => {
   // Create markers
   const markers = distinctURIs.map(uri => {
     const rows = grouped[uri];
-    const { geonames_title, geonames_country, lat, lon } = rows[0];
-    const label = [geonames_title, geonames_country].filter(str => str).join(', ');
+    const { caption, country, geonames_title, geonames_country, geonames_uri, lat, lon } = rows[0];
+    const recordLabel = [caption, country].filter(str => str).join(', ');
+    const mappedLabel = [geonames_title, geonames_country].filter(str => str).join(', ');
 
     return (
       <Marker key={uri} position={[lat, lon]}>
         <Popup>
-          <h1>{label}</h1>
-          <p>
-            {rows.length} record(s)
-          </p>
-          <button onClick={() => props.onSelect(rows)}>
-            Correct
+          <h1>{recordLabel}</h1>
+          <h2>
+            Resolved to: <a href={geonames_uri} target="_blank">{mappedLabel}</a>
+          </h2>
+          {rows.length > 1 &&
+            <p>
+              {rows.length - 1} more record(s)
+            </p>
+          }
+          <button className="primary" onClick={() => props.onSelect(rows)}>
+            Fix georesolution
           </button>
         </Popup>
       </Marker>

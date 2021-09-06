@@ -61,63 +61,65 @@ const App = () => {
     }); 
 
   return (
-    <div className="app">
-      <div className="step upload">
-        <h2>1. Upload CSV</h2>
-        <button className="primary">
-          <BsUpload /> { filename || 'Select File' }
-          <input type="file" className="csv-upload" onChange={onChangeFile} />
-        </button>
-      </div>
-
-      {progress &&
-        <div className="step geocoding"> 
-          <h2>2. Geocoding</h2>
-          <progress max={progress.total} value={progress.count}>{progress.percent.toFixed(2)}%</progress>
-          <div className="progress">
-            {progress.count}/{progress.total} Rows
-          </div>
-        </div>
-      }
-
-      {result && 
-        <div className="step results">
-          <h2>3. Results</h2>
-          <table>
-            <tbody>
-              <tr>
-                <td>Resolved:</td>
-                <td>{result.successful - unresolved.length}</td>
-                <td></td>
-              </tr>
-
-              <tr>
-                <td>Unresolved:</td>
-                <td>{unresolved.length}</td>
-                <td>
-                  <button onClick={() => setSelected(unresolved)}>Fix</button>
-                </td>
-              </tr>
-
-              <tr>
-                <td>Errors:</td>
-                <td>{result.errors}</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-
-          <button className="primary" onClick={onDownloadResult}>
-            <BsDownload /> Download Result CSV
+    <>
+      <div className="app">
+        <div className="step upload">
+          <h2>1. Upload CSV</h2>
+          <button className="primary">
+            <BsUpload /> { filename || 'Select File' }
+            <input type="file" className="csv-upload" onChange={onChangeFile} />
           </button>
         </div>
-      }
 
-      {result && 
-        <OverviewMap 
-          data={result.resolved} 
-          onSelect={rows => setSelected(rows)} />
-      }
+        {progress &&
+          <div className="step geocoding"> 
+            <h2>2. Geocoding</h2>
+            <progress max={progress.total} value={progress.count}>{progress.percent.toFixed(2)}%</progress>
+            <div className="progress">
+              {progress.count}/{progress.total} Rows
+            </div>
+          </div>
+        }
+
+        {result && 
+          <div className="step results">
+            <h2>3. Results</h2>
+            <table>
+              <tbody>
+                <tr>
+                  <td>Resolved:</td>
+                  <td>{result.successful - unresolved.length}</td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>Unresolved:</td>
+                  <td>{unresolved.length}</td>
+                  <td>
+                    <button onClick={() => setSelected(unresolved)}>Fix</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Errors:</td>
+                  <td>{result.errors}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <button className="primary" onClick={onDownloadResult}>
+              <BsDownload /> Download Result CSV
+            </button>
+          </div>
+        }
+
+        {result && 
+          <OverviewMap 
+            data={result.resolved} 
+            onSelect={rows => setSelected(rows)} />
+        }
+      </div>
 
       {selected.length > 0 &&
         <CorrectionModal 
@@ -125,7 +127,7 @@ const App = () => {
           onFixRecord={onFixRecord}
           onClose={() => setSelected([])}/>
       }
-    </div>
+    </>
   );
 
 }
