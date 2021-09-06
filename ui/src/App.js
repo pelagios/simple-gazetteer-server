@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BsUpload, BsDownload } from 'react-icons/bs';
 import Papa from 'papaparse';
 
 import GeoResolver from './GeoResolver';
@@ -9,6 +10,8 @@ import './App.css';
 
 const App = () => {
 
+  const [ filename, setFilename ] = useState();
+
   const [ progress, setProgress ] = useState();
 
   const [ result, setResult ] = useState();
@@ -17,6 +20,8 @@ const App = () => {
 
   const onChangeFile = evt => {
     const file = evt.target.files[0];
+
+    setFilename(file.name);
 
     const reader = new FileReader();
     reader.onload = event => {
@@ -57,13 +62,54 @@ const App = () => {
 
   return (
     <div className="app">
-      <input type="file" onChange={onChangeFile} />
+      <div className="step upload">
+        <h2>1. Upload CSV</h2>
+        <button className="primary">
+          <BsUpload /> { filename || 'Select File' }
+          <input type="file" className="csv-upload" onChange={onChangeFile} />
+        </button>
+      </div>
 
-      {progress && <div className="progress">{progress.count}</div>}
+      {progress &&
+        <div className="step geocoding"> 
+          <h2>2. Geocoding</h2>
+          <progress max={progress.total} value={progress.count}>{progress.percent.toFixed(2)}%</progress>
+          <div className="progress">
+            {progress.count}/{progress.total} Rows
+          </div>
+        </div>
+      }
 
       {result && 
-        <div className="unresolved">
-          {unresolved.length} unresolved <button onClick={() => setSelected(unresolved)}>Fix</button>
+        <div className="step results">
+          <h2>3. Results</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td>Resolved:</td>
+                <td>{result.successful - unresolved.length}</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td>Unresolved:</td>
+                <td>{unresolved.length}</td>
+                <td>
+                  <button onClick={() => setSelected(unresolved)}>Fix</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Errors:</td>
+                <td>{result.errors}</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <button className="primary" onClick={onDownloadResult}>
+            <BsDownload /> Download Result CSV
+          </button>
         </div>
       }
 
@@ -72,8 +118,6 @@ const App = () => {
           data={result.resolved} 
           onSelect={rows => setSelected(rows)} />
       }
-
-      {result && <button onClick={onDownloadResult}>Download</button>}
 
       {selected.length > 0 &&
         <CorrectionModal 

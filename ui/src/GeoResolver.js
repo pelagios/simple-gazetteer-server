@@ -68,7 +68,7 @@ export default class GeoResolver extends Emitter {
         resolved.push(row);
       }
 
-      this.emit('progress', { count: idx + 1, percent: (idx + 1) / total });
+      this.emit('progress', { count: idx + 1, percent: (idx + 1) / total, total });
     }
 
     this.emit('complete', { resolved, successful: ctrResolved, errors: ctrErrors });
