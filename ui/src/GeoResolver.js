@@ -1,9 +1,9 @@
+import memoize from 'memoizee';
 import Emitter from 'tiny-emitter';
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-// TODO memo-ize
-const query = (placename, country, retries) => {
+const query = memoize((placename, country, retries) => {
   const r = retries === undefined ? 10 : retries;
 
   const url = country ?
@@ -24,7 +24,7 @@ const query = (placename, country, retries) => {
         throw error;
       }
     });
-}
+});
 
 export default class GeoResolver extends Emitter {
 
