@@ -3,6 +3,7 @@ import Papa from 'papaparse';
 
 import GeoResolver from './GeoResolver';
 import OverviewMap from './overview/OverviewMap';
+import CorrectionModal from './correct/CorrectionModal';
 
 import './App.css';
 
@@ -11,6 +12,8 @@ const App = () => {
   const [ progress, setProgress ] = useState();
 
   const [ result, setResult ] = useState();
+
+  const [ selected, setSelected ] = useState([]);
 
   const onChangeFile = evt => {
     const file = evt.target.files[0];
@@ -44,15 +47,30 @@ const App = () => {
     a.click();
   }
 
+  const onSelect = rows => {
+    console.log(rows);
+    setSelected(rows);
+  }
+
   return (
     <div className="app">
       <input type="file" onChange={onChangeFile} />
 
       {progress && <div className="progress">{progress.count}</div>}
 
-      {result && <OverviewMap data={result.resolved} />}
+      {result && 
+        <OverviewMap 
+          data={result.resolved} 
+          onSelect={onSelect} />
+      }
 
       {result && <button onClick={onDownloadResult}>Download</button>}
+
+      {selected.length > 0 &&
+        <CorrectionModal 
+          records={selected} 
+          onClose={() => setSelected([])}/>
+      }
     </div>
   );
 

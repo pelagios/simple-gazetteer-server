@@ -61,13 +61,20 @@ const OverviewMap = props => {
 
   // Create markers
   const markers = distinctURIs.map(uri => {
-    const { geonames_title, geonames_country, lat, lon } = grouped[uri][0];
+    const rows = grouped[uri];
+    const { geonames_title, geonames_country, lat, lon } = rows[0];
     const label = [geonames_title, geonames_country].filter(str => str).join(', ');
 
     return (
       <Marker key={uri} position={[lat, lon]}>
         <Popup>
           <h1>{label}</h1>
+          <p>
+            {rows.length} record(s)
+          </p>
+          <button onClick={() => props.onSelect(rows)}>
+            Correct
+          </button>
         </Popup>
       </Marker>
     )
