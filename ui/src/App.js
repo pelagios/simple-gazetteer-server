@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Papa from 'papaparse';
 
 import GeoResolver from './GeoResolver';
+import OverviewMap from './overview/OverviewMap';
 
 import './App.css';
 
@@ -44,12 +45,14 @@ const App = () => {
   }
 
   return (
-    <div className="App">
+    <div className="app">
       <input type="file" onChange={onChangeFile} />
 
-      {progress && <div className="progress">{progress.count}</div> }
+      {progress && <div className="progress">{progress.count}</div>}
 
-      {result && <button onClick={onDownloadResult}>Download</button> }
+      {result && <OverviewMap data={result.resolved} />}
+
+      {result && <button onClick={onDownloadResult}>Download</button>}
     </div>
   );
 
