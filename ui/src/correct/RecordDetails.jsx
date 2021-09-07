@@ -50,6 +50,14 @@ const RecordDetails = props => {
 
   return (
     <div className="record-details-wrapper">
+      <div className="mini-map">
+        <MapContainer center={[lat, lon]} zoom={13}>
+          <TileLayer
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}" />
+
+          <Marker position={[lat, lon]} />
+        </MapContainer>
+      </div>
       <div className="record-details">
         <header>
           <div className="nav">
