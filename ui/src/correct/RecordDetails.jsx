@@ -8,6 +8,8 @@ const getToponym = caption =>
 
 const RecordDetails = props => {
 
+  const [ map, setMap ] = useState();
+
   const { 
     caption, 
     country, 
@@ -15,10 +17,12 @@ const RecordDetails = props => {
     geonames_name_variants,
     geonames_title, 
     geonames_uri,
-    lat, 
-    lon,
+    latitude, 
+    longitude,
     resource_id
   } = props.record;
+
+  const position = (latitude && longitude) ? [ latitude, longitude ] : [0 , 0];
 
   const [ alternatives, setAlternatives ] = useState([]);
 
@@ -34,7 +38,10 @@ const RecordDetails = props => {
 
   useEffect(() => {
     setQuery(getToponym(caption));
-  }, [ props.record ])
+
+    if (map)
+      map.panTo(position);
+  }, [ props.record ]);
 
   const onSelectAlternative = alternative => () => {
     props.onFixRecord(props.record, {
@@ -43,19 +50,23 @@ const RecordDetails = props => {
       geonames_name_variants: [], // TODO!
       geonames_title: alternative.name,
       geonames_uri: `http://sws.geonames.org/${alternative.geonameId}`,
-      ĺat: alternative.lat && parseFloat(alternative.lat),
-      lon: alternative.lng && parseFloat(alternative.lng)
+      latitude: alternative.lat && parseFloat(alternative.lat),
+      longitude: alternative.lng && parseFloat(alternative.lng)
     })
   }
+
 
   return (
     <div className="record-details-wrapper">
       <div className="mini-map">
-        <MapContainer center={[lat, lon]} zoom={13}>
+        <MapContainer
+          whenCreated={setMap}
+          center={position} 
+          zoom={8}>
           <TileLayer
             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}" />
 
-          <Marker position={[lat, lon]} />
+          <Marker position={position} />
         </MapContainer>
       </div>
       <div className="record-details">

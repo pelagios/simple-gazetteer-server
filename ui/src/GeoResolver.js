@@ -54,8 +54,8 @@ export default class GeoResolver extends Emitter {
           resolved.push({
             ...row,
             geonames_uri: h['@id'],
-            lon: h.geometry.coordinates[0],
-            lat: h.geometry.coordinates[1],
+            longitude: h.geometry.coordinates[0],
+            latitude: h.geometry.coordinates[1],
             geonames_title: h.properties.title,
             geonames_country: h.properties.ccodes?.length > 0 && h.properties.ccodes[0],
             geonames_name_variants: h.names.map(n => n.toponym).join(';')

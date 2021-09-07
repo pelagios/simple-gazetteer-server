@@ -55,12 +55,16 @@ const App = () => {
   const unresolved = result?.resolved.filter(row => !row.geonames_uri);
 
   const onFixRecord = (previous, fixed) => {
+    // Update results
+    const updatedResult = result.resolved.map(row => row == previous ? fixed : row);
     setResult({
       ...result,
-      resolved: result.resolved.map(row => row == previous ? fixed : row)
+      resolved: updatedResult
     });
 
-    setSelected(selected.filter(row => row == previous ? fixed : row));
+    // Remove from selection
+    const updatedSelection = selected.filter(row => row !== previous);    
+    setSelected(updatedSelection);
   }
 
   return (

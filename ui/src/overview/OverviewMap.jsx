@@ -62,12 +62,12 @@ const OverviewMap = props => {
   // Create markers
   const markers = distinctURIs.map(uri => {
     const rows = grouped[uri];
-    const { caption, country, geonames_title, geonames_country, geonames_uri, lat, lon } = rows[0];
+    const { caption, country, geonames_title, geonames_country, geonames_uri, latitude, longitude } = rows[0];
     const recordLabel = [caption, country].filter(str => str).join(', ');
     const mappedLabel = [geonames_title, geonames_country].filter(str => str).join(', ');
 
     return (
-      <Marker key={uri} position={[lat, lon]}>
+      <Marker key={uri} position={[latitude, longitude]}>
         <Popup>
           <h1>{recordLabel}</h1>
           <h2>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RecordDetails from './RecordDetails';
 
 import './CorrectionModal.css';
@@ -6,6 +6,10 @@ import './CorrectionModal.css';
 const CorrectionModal = props => {
 
   const [ currentRecord, setCurrentRecord ] = useState(props.records[0]);
+
+  useEffect(() => {
+    setCurrentRecord(props.records[0]);
+  }, [ props.records ]);
 
   const onPrevious = () => {
     const currentIdx = props.records.indexOf(currentRecord);
