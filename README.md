@@ -34,6 +34,18 @@ The project includes a browser-based utility for batch-georesolution of CSV data
 
 ![Georesolution UI screencast](georesolution-ui-screencast.gif)
 
+The utility runs requests against the gazetteer server for each distinct placename
+in the CSV. The result is shown on the map, and an extended CSV (origina +
+additional columns with GeoNames information) is made available for export.
+
+Wrong matches or places that could not be resolved can be fixed manually. In this
+case, the interface queries the GeoNames API directly (because it sometimes 
+returns different matches than the ElasticSearch backend).
+
+
+
+
+
 
 
 
