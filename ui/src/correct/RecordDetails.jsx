@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BsArrowLeftShort, BsArrowRightShort } from 'react-icons/bs';
 import { IoMdClose, IoMdSearch } from 'react-icons/io';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
-// Another Manar al-Athar-specific hack
 const getToponym = caption =>
   caption.split('-')[0].trim();
 
@@ -49,106 +49,108 @@ const RecordDetails = props => {
   }
 
   return (
-    <div className="record-details">
-      <header>
-        <div className="nav">
-          <BsArrowLeftShort onClick={props.onPrevious} />
-          <BsArrowRightShort onClick={props.onNext}/>
-        </div>
+    <div className="record-details-wrapper">
+      <div className="record-details">
+        <header>
+          <div className="nav">
+            <BsArrowLeftShort onClick={props.onPrevious} />
+            <BsArrowRightShort onClick={props.onNext}/>
+          </div>
 
-        {props.idx} / {props.totals}
-        
-        <div className="nav">
-          <IoMdClose onClick={props.onClose} />
-        </div>
-      </header>
+          {props.idx} / {props.totals}
+          
+          <div className="nav">
+            <IoMdClose onClick={props.onClose} />
+          </div>
+        </header>
 
-      <div className="section place-info">
-        <div className="record">
-          <h3>Record</h3>
-          <table>
-            <tbody>
-              <tr>
-                <td>ID</td><td>{resource_id}</td>
-              </tr>
-              <tr>
-                <td>Caption</td><td>{caption}</td>
-              </tr>
-              <tr>
-                <td>Country</td><td>{country}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <div className="section place-info">
+          <div className="record">
+            <h3>Record</h3>
+            <table>
+              <tbody>
+                <tr>
+                  <td>ID</td><td>{resource_id}</td>
+                </tr>
+                <tr>
+                  <td>Caption</td><td>{caption}</td>
+                </tr>
+                <tr>
+                  <td>Country</td><td>{country}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <div className="matched-to">
-          <h3>Matched to</h3>
-          <table>
-            <tbody>
-              <tr>
-                <td>GeoNames</td>
-                <td>{geonames_title} ({geonames_country})</td>
-              </tr>
-              <tr>
-                <td>
-                  Name
-                </td>
-                <td>
-                  <a href={geonames_uri} target="_blank">{geonames_uri}</a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Variants
-                </td>
-                <td>
-                  {geonames_name_variants}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div className="section alternatives">
-        <div className="search">
-          <h3>Alternatives</h3>
-          <div>
-            <input 
-              type="text" 
-              value={query}
-              onChange={evt => setQuery(evt.target.value)} />
-            <IoMdSearch />
+          <div className="matched-to">
+            <h3>Matched to</h3>
+            <table>
+              <tbody>
+                <tr>
+                  <td>GeoNames</td>
+                  <td>{geonames_title} ({geonames_country})</td>
+                </tr>
+                <tr>
+                  <td>
+                    Name
+                  </td>
+                  <td>
+                    <a href={geonames_uri} target="_blank">{geonames_uri}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Variants
+                  </td>
+                  <td>
+                    {geonames_name_variants}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Country</th>
-              <th>Type</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {alternatives.map(p => 
-              <tr key={p.geonameId}>
-                <td>
-                  <a href={`https://sws.geonames.org/${p.geonameId}`} target="_blank">
-                    {p.geonameId}
-                  </a>
-                </td>
-                <td>{p.name}</td>
-                <td>{p.countryName}</td>
-                <td>{p.fcodeName}</td>
-                <td>
-                  <button onClick={onSelectAlternative(p)}>Select</button>
-                </td>
+
+        <div className="section alternatives">
+          <div className="search">
+            <h3>Alternatives</h3>
+            <div>
+              <input 
+                type="text" 
+                value={query}
+                onChange={evt => setQuery(evt.target.value)} />
+              <IoMdSearch />
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Country</th>
+                <th>Type</th>
+                <th></th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {alternatives.map(p => 
+                <tr key={p.geonameId}>
+                  <td>
+                    <a href={`https://sws.geonames.org/${p.geonameId}`} target="_blank">
+                      {p.geonameId}
+                    </a>
+                  </td>
+                  <td>{p.name}</td>
+                  <td>{p.countryName}</td>
+                  <td>{p.fcodeName}</td>
+                  <td>
+                    <button onClick={onSelectAlternative(p)}>Select</button>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )
