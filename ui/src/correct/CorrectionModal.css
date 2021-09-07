@@ -11,6 +11,11 @@
   align-items:center;
 }
 
+.correction-modal h3 {
+  font-size:17px;
+  padding-top:10px;
+}
+
 .correction-modal .record-details {
   width:800px;
   background-color:#fff;
@@ -42,11 +47,94 @@
   cursor:pointer;
 }
 
-.correction-modal .record-details .section {
+.correction-modal .section.place-info {
   padding:20px;
+  border-bottom:1px solid rgba(0, 0, 0, 0.1);
+}
+
+.correction-modal .place-info table {
+  border-collapse:collapse;
+  width:100%;
+  margin-bottom:20px;
+}
+
+.correction-modal .place-info table tr:first-child td {
+  border-top:1px solid rgb(204, 204, 204);
+}
+
+.correction-modal .place-info table tr td:first-child {
+  width:90px;
+}
+
+.correction-modal .place-info table td {
+  padding:5px 20px 5px 0;
+  border-bottom:1px solid rgb(204, 204, 204);
 }
 
 .correction-modal .record-details .section.alternatives {
   background-color:#f5f5f5;
   overflow-y:scroll;
+}
+
+.correction-modal .section.alternatives .search {
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  padding:10px;
+}
+
+.correction-modal .section.alternatives .search div {
+  flex:1;
+  display:flex;
+  flex-direction:row;
+  margin-left:10px;
+  max-width:340px;
+  position:relative;
+}
+
+.correction-modal .section.alternatives .search div input {
+  padding:5px 10px;
+  border:1px solid rgb(204, 204, 204);
+  color:rgba(0,0,0,0.8);
+  width:100%;
+  outline:none;
+}
+
+.correction-modal .section.alternatives .search div svg {
+  position:absolute;
+  top:5px;
+  right:8px;
+  font-size:30px;
+  color:rgba(0, 0, 0, 0.35);
+}
+
+.correction-modal .section.alternatives table {
+  border-collapse:collapse;
+  width:100%;
+  margin-bottom:20px;
+}
+
+.correction-modal .section.alternatives table th {
+  text-align:left;
+  padding:10px;
+  font-size:15px;
+  border-style:solid;
+  border-color:rgba(0, 0, 0, 0.1);
+  border-width:1px 0;
+}
+
+.correction-modal .section.alternatives table td {
+  background-color:rgba(255, 255, 255, 0.8);
+  padding:5px 10px;
+  font-size:15px;
+  border-bottom:1px solid #f5f5f5;
+}
+
+.correction-modal .section.alternatives table td button {
+  border:none;
+  outline:none;
+  background:none;
+  cursor:pointer;
+  text-decoration:underline;
+  color:rgb(73, 116, 235);
 }

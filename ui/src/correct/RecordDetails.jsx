@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BsArrowLeftShort, BsArrowRightShort } from 'react-icons/bs';
-import { IoMdClose } from 'react-icons/io';
+import { IoMdClose, IoMdSearch } from 'react-icons/io';
 
 // Another Manar al-Athar-specific hack
 const getToponym = caption =>
@@ -25,7 +25,7 @@ const RecordDetails = props => {
   const [ query, setQuery ] = useState(getToponym(caption));
 
   useEffect(() => {
-    fetch(`http://api.geonames.org/searchJSON?q=${query}&maxRows=20&username=pelagios`)
+    fetch(`http://api.geonames.org/searchJSON?name=${query}&maxRows=20&fuzzy=0.7&username=pelagios`)
       .then(response => response.json())
       .then(data => {
         setAlternatives(data.geonames);
@@ -65,6 +65,7 @@ const RecordDetails = props => {
 
       <div className="section place-info">
         <div className="record">
+          <h3>Record</h3>
           <table>
             <tbody>
               <tr>
@@ -80,17 +81,26 @@ const RecordDetails = props => {
           </table>
         </div>
 
-        <div className="section matched-to">
+        <div className="matched-to">
           <h3>Matched to</h3>
           <table>
             <tbody>
-              <tr><td>{geonames_title} ({geonames_country})</td></tr>
               <tr>
+                <td>GeoNames</td>
+                <td>{geonames_title} ({geonames_country})</td>
+              </tr>
+              <tr>
+                <td>
+                  Name
+                </td>
                 <td>
                   <a href={geonames_uri} target="_blank">{geonames_uri}</a>
                 </td>
               </tr>
               <tr>
+                <td>
+                  Variants
+                </td>
                 <td>
                   {geonames_name_variants}
                 </td>
@@ -101,11 +111,16 @@ const RecordDetails = props => {
       </div>
 
       <div className="section alternatives">
-        <h3>Alternatives</h3>
-        <input 
-          type="text" 
-          value={query}
-          onChange={evt => setQuery(evt.target.value)} />
+        <div className="search">
+          <h3>Alternatives</h3>
+          <div>
+            <input 
+              type="text" 
+              value={query}
+              onChange={evt => setQuery(evt.target.value)} />
+            <IoMdSearch />
+          </div>
+        </div>
         <table>
           <thead>
             <tr>
