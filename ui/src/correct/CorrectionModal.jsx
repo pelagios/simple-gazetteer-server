@@ -5,43 +5,43 @@ import './CorrectionModal.css';
 
 const CorrectionModal = props => {
 
-  const [ currentRecord, setCurrentRecord ] = useState(props.records[0]);
+  const [ currentSelected, setCurrentSelected ] = useState(0);
 
   useEffect(() => {
-    setCurrentRecord(props.records[0]);
+    const idx = Math.min(currentSelected, props.records.length - 1);
+    setCurrentSelected(idx);
   }, [ props.records ]);
 
   const onPrevious = () => {
-    const currentIdx = props.records.indexOf(currentRecord);
-    const prevIdx = Math.max(0, currentIdx - 1);
-
-    if (currentIdx !== prevIdx)
-      setCurrentRecord(props.records[prevIdx]);
+    const prevIdx = Math.max(0, currentSelected - 1);
+    setCurrentSelected(prevIdx);
   }
 
   const onNext = () => {
-    const currentIdx = props.records.indexOf(currentRecord);
-    const nextIdx = Math.min(currentIdx + 1, props.records.length - 1);
-
-    if (currentIdx !== nextIdx)
-      setCurrentRecord(props.records[nextIdx]);
+    const nextIdx = Math.min(currentSelected + 1, props.records.length - 1);
+    setCurrentSelected(nextIdx);
   }
 
   const onFixRecord = (previous, fixed) => {
-    setCurrentRecord(fixed);
     props.onFixRecord(previous, fixed);
+    
+    // Fixing a record will reduce the size of the array by one!
+    if (currentSelected === props.records.length - 1)
+      setCurrentSelected(Math.max(0, currentSelected - 1));
   }
 
   return (
     <div className="correction-modal">
-      <RecordDetails 
-        record={currentRecord} 
-        totals={props.records.length}
-        idx={props.records.indexOf(currentRecord) + 1}
-        onPrevious={onPrevious} 
-        onNext={onNext} 
-        onFixRecord={onFixRecord}
-        onClose={props.onClose} />
+      {props.records[currentSelected] &&
+        <RecordDetails 
+          record={props.records[currentSelected]} 
+          totals={props.records.length}
+          idx={currentSelected + 1}
+          onPrevious={onPrevious} 
+          onNext={onNext} 
+          onFixRecord={onFixRecord}
+          onClose={props.onClose} />
+      }
     </div>
   )
 

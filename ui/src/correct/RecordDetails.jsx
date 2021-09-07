@@ -29,15 +29,19 @@ const RecordDetails = props => {
   const [ query, setQuery ] = useState(getToponym(caption));
 
   useEffect(() => {
+    let q = query;
+
     fetch(`http://api.geonames.org/searchJSON?name=${query}&maxRows=20&fuzzy=0.7&username=pelagios`)
       .then(response => response.json())
       .then(data => {
-        setAlternatives(data.geonames);
+        if (q === query)
+          setAlternatives(data.geonames);
       });
   }, [ query ]);
 
   useEffect(() => {
     setQuery(getToponym(caption));
+    setAlternatives([]);
 
     if (map)
       map.panTo(position);
@@ -70,7 +74,7 @@ const RecordDetails = props => {
         </MapContainer>
       </div>
       <div className="record-details">
-        <header>
+        <header className="noselect">
           <div className="nav">
             <BsArrowLeftShort onClick={props.onPrevious} />
             <BsArrowRightShort onClick={props.onNext}/>
@@ -107,7 +111,7 @@ const RecordDetails = props => {
               <tbody>
                 <tr>
                   <td>GeoNames</td>
-                  <td>{geonames_title} ({geonames_country})</td>
+                  <td>{geonames_title} { geonames_country && <span>({geonames_country})</span> }</td>
                 </tr>
                 <tr>
                   <td>
