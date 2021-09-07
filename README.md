@@ -1,20 +1,40 @@
-# Simple Gazetteer Server
+# Simple Gazetteer & Georesolver
 
-__!!! Work in progress !!!__
+__Work in progress!__
 
-A simple gazetteer server & API for use with [Linked Places](https://github.com/LinkedPasts/linked-places-format) 
-and other authority file formats. This repository includes a global GeoNames dataset to get you started (1.6 million 
-notable places).
+A simple gazetteer server & API for use with 
+[Linked Places](https://github.com/LinkedPasts/linked-places-format) 
+gazetteers. 
 
-Simple Gazetteer Server (SGS) is built with ElasticSearch, and includes utilities for data import and management, a 
-JSON API, and an administration UI. You can deploy SGS to an existing ElasticSearch cluster, or
-use the included Docker configuration for quick installation.
+To get you started, a Linked Places dumpfile of 1.6 million 
+notable places (= places with Wikipedia or Wikidata correspondences) from 
+GeoNames is [included here](/blob/main/backend/bootstrap/geonames_global_notable.lpf.jsonl.gz).
 
-## Installing with Docker
+## Server & API
 
-Run `docker-compose build` and `docker-compose up`.
+The gazetteer server is based on ElasticSearch, behind a simple JSON API 
+built with Node.js/Express. A Docker configuration for quick setup is included.
 
-## Example data
+```shell
+$ docker-compose build
+$ docker-compose up
+```
 
-This repositry includes a sample gazetteer dataset consisting of all "notable" places in GeoNames, i.e.
-those places in GeoNames that have a corresponding entry in Wikipedia or Wikidata.
+After initial installation, you need to index the gazetteer dataset:
+
+```shell
+$ cd backend/bootstrap
+$ python init_backend.py
+```
+
+## Bulk-Georesolution Utility
+
+The project includes a browser-based utility for batch-georesolution of CSV data. 
+(Setup instructions to follow!)
+
+![Georesolution UI screencast](georesolution-ui-screencast.gif)
+
+
+
+
+
