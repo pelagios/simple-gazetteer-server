@@ -10,16 +10,17 @@ const RecordDetails = props => {
 
   const [ map, setMap ] = useState();
 
+  const caption = props.record.Caption;
+  const resource_id = props.record['Resource ID(s)'];
+  const country = props.record.Country;
+
   const { 
-    caption, 
-    country, 
     geonames_country,
     geonames_name_variants,
     geonames_title, 
     geonames_uri,
     latitude, 
     longitude,
-    resource_id
   } = props.record;
 
   const position = (latitude && longitude) ? [ latitude, longitude ] : [0 , 0];

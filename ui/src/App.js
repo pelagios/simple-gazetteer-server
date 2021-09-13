@@ -8,6 +8,9 @@ import CorrectionModal from './correct/CorrectionModal';
 
 import './App.css';
 
+const getToponym = caption =>
+  caption.split('-')[0].trim();
+
 const App = () => {
 
   const [ filename, setFilename ] = useState();
@@ -29,7 +32,7 @@ const App = () => {
         header: true
       });
 
-      csv.data = csv.data.filter(row => row.resource_id); // Filter empty
+      csv.data = csv.data.filter(row => row['Resource ID(s)']); // Filter empty
 
       const resolver = new GeoResolver();
       resolver.on('progress', setProgress);
@@ -55,8 +58,33 @@ const App = () => {
   const unresolved = result?.resolved.filter(row => !row.geonames_uri);
 
   const onFixRecord = (previous, fixed) => {
+    const fixedToponym = getToponym(fixed.Caption);
+
     // Update results
-    const updatedResult = result.resolved.map(row => row == previous ? fixed : row);
+    const updatedResult = result.resolved.map(row => { 
+      if (row == previous) {
+        // Fix this record
+        return fixed;
+      } else {
+        // Bulk-fix all with same toponym
+        const toponym = getToponym(row.Caption);
+
+        if (toponym === fixedToponym) {
+          return {
+            ...row,
+            geonames_country: fixed.geonames_country,
+            geonames_name_variants: fixed.geonames_name_variants,
+            geonames_title: fixed.geonames_title,
+            geonames_uri: fixed.geonames_uri,
+            latitude: fixed.latitude,
+            longitude: fixed.longitude
+          }
+        } else {
+          return row;
+        }
+      }
+    });
+
     setResult({
       ...result,
       resolved: updatedResult
