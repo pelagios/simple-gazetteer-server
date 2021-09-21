@@ -1,7 +1,5 @@
 # Simple Gazetteer & Georesolver
 
-__Work in progress!__
-
 A simple gazetteer server & API for use with 
 [Linked Places](https://github.com/LinkedPasts/linked-places-format) 
 gazetteers. 
