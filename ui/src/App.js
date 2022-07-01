@@ -15,6 +15,8 @@ const App = () => {
 
   const [ filename, setFilename ] = useState();
 
+  const [ columns, setColumns ] = useState([]);
+
   const [ progress, setProgress ] = useState();
 
   const [ result, setResult ] = useState();
@@ -32,6 +34,9 @@ const App = () => {
         header: true
       });
 
+      setColumns(csv.meta.fields);
+
+      /*
       csv.data = csv.data.filter(row => row['Resource ID(s)']); // Filter empty
 
       const resolver = new GeoResolver();
@@ -39,6 +44,7 @@ const App = () => {
       resolver.on('complete', resolved => setResult(resolved));
 
       resolver.resolve(csv);
+      */
     };
   
     reader.readAsText(file);
@@ -105,6 +111,32 @@ const App = () => {
             <input type="file" className="csv-upload" onChange={onChangeFile} />
           </button>
         </div>
+
+        {columns.length > 0 &&
+          <>
+            <h2>2. Select Columns</h2>
+            <div>
+              <label htmlFor="toponym-column">Placename</label>
+              <select id="toponym-column">
+                {columns.map(column=> 
+                  <option key={column} value={column}>{column}</option>
+                )}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="country-column">Country</label>
+              <select id="country-column" defaultValue>
+                <option disabled value> -- optional -- </option>
+                {columns.map(column =>
+                  <option key={column} value={column}>{column}</option>
+                )}
+              </select>
+            </div>
+
+            <button class="primary">Geocode</button>
+          </>
+        }
 
         {progress &&
           <div className="step geocoding"> 
