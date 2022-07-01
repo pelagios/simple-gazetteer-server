@@ -28,6 +28,13 @@ const query = memoize((placename, country, retries) => {
 
 export default class GeoResolver extends Emitter {
 
+  constructor(toponymColumn, countryColumn) {
+    super();
+
+    this.toponymColumn = toponymColumn;
+    this.countryColumn = countryColumn;
+  }
+
   resolve = async csv => {
     const total = csv.data.length;
 
@@ -37,8 +44,8 @@ export default class GeoResolver extends Emitter {
     let ctrErrors = 0;
     
     for (const [ idx, row ] of csv.data.entries()) {
-      const placename = row.Caption.split('-')[0].trim();
-      const country = row.Country.trim();
+      const placename = row[this.toponymColumn].trim(); // row.Caption.split('-')[0].trim();
+      const country = row[this.countryColumn].trim();
 
       try {
         const results = await query(placename, country);

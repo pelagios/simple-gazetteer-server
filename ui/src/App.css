@@ -41,6 +41,10 @@ button.primary {
   cursor:pointer;
 }
 
+button.primary:disabled {
+  background-color:#9ab5ff;
+}
+
 button.primary svg {
   font-size:17px;
   vertical-align:text-bottom;
@@ -83,6 +87,20 @@ input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
 
 .step {
   padding-bottom:30px;
+}
+
+.step.pick-columns .column-choice {
+  padding-bottom:10px;
+}
+
+.step.pick-columns label {
+  display:inline-block;
+  width:100px;
+}
+
+.step.pick-columns select {
+  width: 180px;
+  padding: 5px;
 }
 
 .progress {

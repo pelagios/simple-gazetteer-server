@@ -15,7 +15,13 @@ const App = () => {
 
   const [ filename, setFilename ] = useState();
 
+  const [ csv, setCsv ] = useState();
+
   const [ columns, setColumns ] = useState([]);
+
+  const [ toponymCol, setToponymCol ] = useState();
+
+  const [ countryCol, setCountryCol ] = useState();
 
   const [ progress, setProgress ] = useState();
 
@@ -35,19 +41,19 @@ const App = () => {
       });
 
       setColumns(csv.meta.fields);
-
-      /*
-      csv.data = csv.data.filter(row => row['Resource ID(s)']); // Filter empty
-
-      const resolver = new GeoResolver();
-      resolver.on('progress', setProgress);
-      resolver.on('complete', resolved => setResult(resolved));
-
-      resolver.resolve(csv);
-      */
+      setCsv(csv);
     };
   
     reader.readAsText(file);
+  }
+
+  const startGeocoding = () => {
+    const resolver = new GeoResolver(toponymCol, countryCol);
+
+    resolver.on('progress', setProgress);
+    resolver.on('complete', resolved => setResult(resolved));
+
+    resolver.resolve(csv);
   }
 
   const onDownloadResult = () => {
@@ -113,34 +119,48 @@ const App = () => {
         </div>
 
         {columns.length > 0 &&
-          <>
+          <div className="step pick-columns">
             <h2>2. Select Columns</h2>
-            <div>
+            <div className="column-choice">
               <label htmlFor="toponym-column">Placename</label>
-              <select id="toponym-column">
+              <select 
+                id="toponym-column"
+                defaultValue
+                value={toponymCol}
+                onChange={evt => setToponymCol(evt.target.value)}>
+              
+                <option disabled value> -- required -- </option>
                 {columns.map(column=> 
                   <option key={column} value={column}>{column}</option>
                 )}
               </select>
             </div>
 
-            <div>
+            <div className="column-choice">
               <label htmlFor="country-column">Country</label>
-              <select id="country-column" defaultValue>
-                <option disabled value> -- optional -- </option>
+              <select 
+                id="country-column" 
+                defaultValue
+                value={countryCol}
+                onChange={evt => setCountryCol(evt.target.value)}>
+
+                <option value> -- optional -- </option>
                 {columns.map(column =>
                   <option key={column} value={column}>{column}</option>
                 )}
               </select>
             </div>
 
-            <button class="primary">Geocode</button>
-          </>
+            <button
+              disabled={!toponymCol}
+              className="primary"
+              onClick={startGeocoding}>Geocode</button>
+          </div>
         }
 
         {progress &&
           <div className="step geocoding"> 
-            <h2>2. Geocoding</h2>
+            <h2>3. Geocoding</h2>
             <progress max={progress.total} value={progress.count}>{progress.percent.toFixed(2)}%</progress>
             <div className="progress">
               {progress.count}/{progress.total} Rows
@@ -150,7 +170,7 @@ const App = () => {
 
         {result && 
           <div className="step results">
-            <h2>3. Results</h2>
+            <h2>4. Results</h2>
             <table>
               <tbody>
                 <tr>
